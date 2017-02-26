@@ -1,0 +1,18 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+
+<div class="btn-group btn-group-xs" role="group" aria-label="...">
+    <!-- data-toggle="modal" data-target="#encrypt_modal" -->
+	<a href="#" class="btn btn-default"
+		onclick="$.kr_form('${pageContext.request.contextPath}/manage/type/encryptUI.action?id=${type.id}', 'type_encrypt_form', '加密', 'sm');">
+	加密</a> 
+		
+	<a  onclick="$.kr_confirm('${pageContext.request.contextPath}/manage/type/delete.action?id=${type.id}', '确定删除此记录？');"
+		class="btn btn-default"
+		href="#"> <span class="glyphicon glyphicon-trash"
+		aria-hidden="true"></span>
+	删除</a>
+
+</div>
+
+

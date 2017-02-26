@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kuangren.mapper.social.blog.LogMapper" >
+  <resultMap id="BaseResultMap" type="com.kuangren.po.log.Log" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isSecret" property="isSecret" jdbcType="TINYINT" />
+    <result column="seeCount" property="seeCount" jdbcType="INTEGER" />
+    <result column="replyCount" property="replyCount" jdbcType="INTEGER" />
+    <result column="favor" property="favor" jdbcType="INTEGER" />
+    <result column="topTime" property="topTime" jdbcType="TIMESTAMP" />
+    <result column="type" property="type" jdbcType="CHAR" />
+    <result column="secret_id" property="secret_id" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.kuangren.po.log.Log" extends="BaseResultMap" >
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, title, createTime, updateTime, status, isSecret, seeCount, replyCount, favor, 
+    topTime, type, secret_id
+  </sql>
+  <sql id="Blob_Column_List" >
+    content
+  </sql>
+  
+  <!-- 查询日志前面多少条记录（排序：最新创建） -->
+  <select id="getListFront" resultType="com.kuangren.po.log.LogCustom" parameterType="com.kuangren.po.log.LogQueryVo">
+  	SELECT
+		*
+	FROM
+		log
+	<where>
+		<if test="poCustom!=null">
+			<if test="poCustom.status != null">
+				AND status &lt;&gt; #{poCustom.status} AND status &lt;&gt; 2
+			</if>
+			<if test="poCustom.isSecret != null">
+				AND isSecret = #{poCustom.isSecret}
+			</if>
+		</if>
+	</where>
+	ORDER BY
+		createTime DESC
+	LIMIT #{pagingBean.limitFront}
+  </select>
+  
+  <!-- 普通用户：查询日志前面多少条记录（排序：最新创建） -->
+  <!-- <select id="getListFrontCondition" resultType="com.kuangren.po.log.LogCustom" parameterType="com.kuangren.po.log.LogQueryVo">
+  	SELECT
+		*
+	FROM
+		log
+	WHERE status &lt;&gt; 0
+	AND isSecret = 0
+	ORDER BY
+		createTime DESC
+	LIMIT #{pagingBean.limitFront}
+  </select> -->
+  
+  
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.kuangren.po.log.LogExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.kuangren.po.log.LogExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from log
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from log
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.kuangren.po.log.LogExample" >
+    delete from log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.kuangren.po.log.Log" >
+    insert into log (id, title, createTime, 
+      updateTime, status, isSecret, 
+      seeCount, replyCount, favor, 
+      topTime, type, secret_id, 
+      content)
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{isSecret,jdbcType=TINYINT}, 
+      #{seeCount,jdbcType=INTEGER}, #{replyCount,jdbcType=INTEGER}, #{favor,jdbcType=INTEGER}, 
+      #{topTime,jdbcType=TIMESTAMP}, #{type,jdbcType=CHAR}, #{secret_id,jdbcType=INTEGER}, 
+      #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.kuangren.po.log.Log" >
+    insert into log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+      <if test="updateTime != null" >
+        updateTime,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isSecret != null" >
+        isSecret,
+      </if>
+      <if test="seeCount != null" >
+        seeCount,
+      </if>
+      <if test="replyCount != null" >
+        replyCount,
+      </if>
+      <if test="favor != null" >
+        favor,
+      </if>
+      <if test="topTime != null" >
+        topTime,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="secret_id != null" >
+        secret_id,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isSecret != null" >
+        #{isSecret,jdbcType=TINYINT},
+      </if>
+      <if test="seeCount != null" >
+        #{seeCount,jdbcType=INTEGER},
+      </if>
+      <if test="replyCount != null" >
+        #{replyCount,jdbcType=INTEGER},
+      </if>
+      <if test="favor != null" >
+        #{favor,jdbcType=INTEGER},
+      </if>
+      <if test="topTime != null" >
+        #{topTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=CHAR},
+      </if>
+      <if test="secret_id != null" >
+        #{secret_id,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.kuangren.po.log.LogExample" resultType="java.lang.Integer" >
+    select count(*) from log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update log
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.title != null" >
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        createTime = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        updateTime = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.isSecret != null" >
+        isSecret = #{record.isSecret,jdbcType=TINYINT},
+      </if>
+      <if test="record.seeCount != null" >
+        seeCount = #{record.seeCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.replyCount != null" >
+        replyCount = #{record.replyCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.favor != null" >
+        favor = #{record.favor,jdbcType=INTEGER},
+      </if>
+      <if test="record.topTime != null" >
+        topTime = #{record.topTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=CHAR},
+      </if>
+      <if test="record.secret_id != null" >
+        secret_id = #{record.secret_id,jdbcType=INTEGER},
+      </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update log
+    set id = #{record.id,jdbcType=INTEGER},
+      title = #{record.title,jdbcType=VARCHAR},
+      createTime = #{record.createTime,jdbcType=TIMESTAMP},
+      updateTime = #{record.updateTime,jdbcType=TIMESTAMP},
+      status = #{record.status,jdbcType=TINYINT},
+      isSecret = #{record.isSecret,jdbcType=TINYINT},
+      seeCount = #{record.seeCount,jdbcType=INTEGER},
+      replyCount = #{record.replyCount,jdbcType=INTEGER},
+      favor = #{record.favor,jdbcType=INTEGER},
+      topTime = #{record.topTime,jdbcType=TIMESTAMP},
+      type = #{record.type,jdbcType=CHAR},
+      secret_id = #{record.secret_id,jdbcType=INTEGER},
+      content = #{record.content,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update log
+    set id = #{record.id,jdbcType=INTEGER},
+      title = #{record.title,jdbcType=VARCHAR},
+      createTime = #{record.createTime,jdbcType=TIMESTAMP},
+      updateTime = #{record.updateTime,jdbcType=TIMESTAMP},
+      status = #{record.status,jdbcType=TINYINT},
+      isSecret = #{record.isSecret,jdbcType=TINYINT},
+      seeCount = #{record.seeCount,jdbcType=INTEGER},
+      replyCount = #{record.replyCount,jdbcType=INTEGER},
+      favor = #{record.favor,jdbcType=INTEGER},
+      topTime = #{record.topTime,jdbcType=TIMESTAMP},
+      type = #{record.type,jdbcType=CHAR},
+      secret_id = #{record.secret_id,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kuangren.po.log.Log" >
+    update log
+    <set >
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isSecret != null" >
+        isSecret = #{isSecret,jdbcType=TINYINT},
+      </if>
+      <if test="seeCount != null" >
+        seeCount = #{seeCount,jdbcType=INTEGER},
+      </if>
+      <if test="replyCount != null" >
+        replyCount = #{replyCount,jdbcType=INTEGER},
+      </if>
+      <if test="favor != null" >
+        favor = #{favor,jdbcType=INTEGER},
+      </if>
+      <if test="topTime != null" >
+        topTime = #{topTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=CHAR},
+      </if>
+      <if test="secret_id != null" >
+        secret_id = #{secret_id,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.kuangren.po.log.Log" >
+    update log
+    set title = #{title,jdbcType=VARCHAR},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT},
+      isSecret = #{isSecret,jdbcType=TINYINT},
+      seeCount = #{seeCount,jdbcType=INTEGER},
+      replyCount = #{replyCount,jdbcType=INTEGER},
+      favor = #{favor,jdbcType=INTEGER},
+      topTime = #{topTime,jdbcType=TIMESTAMP},
+      type = #{type,jdbcType=CHAR},
+      secret_id = #{secret_id,jdbcType=INTEGER},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kuangren.po.log.Log" >
+    update log
+    set title = #{title,jdbcType=VARCHAR},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT},
+      isSecret = #{isSecret,jdbcType=TINYINT},
+      seeCount = #{seeCount,jdbcType=INTEGER},
+      replyCount = #{replyCount,jdbcType=INTEGER},
+      favor = #{favor,jdbcType=INTEGER},
+      topTime = #{topTime,jdbcType=TIMESTAMP},
+      type = #{type,jdbcType=CHAR},
+      secret_id = #{secret_id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

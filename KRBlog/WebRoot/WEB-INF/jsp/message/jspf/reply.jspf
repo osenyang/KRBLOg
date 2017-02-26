@@ -1,0 +1,101 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<style>
+<!--
+.reply_content {
+	/* position: relative; */
+    margin-top: 30px;
+    background-color: #FFFFF0;/* #FFFFF0 */
+    padding: 6px;
+}
+
+.reply_list {
+	position: relative;
+    margin-top: 12px;
+}
+
+.green {
+	color: green;
+}
+
+#reply_content_area {
+	/* 加入datatable 样式会出现异常。需要控制固定的宽度 cols="97" */
+}
+-->
+</style>
+
+<script>
+$(function(){
+	/* $('.collapse').on('show.bs.collapse', function () {
+		//alert("test");
+	}) */
+	
+	/* $(".collapse_a").click(function(){
+		//alert("test");
+	}); */
+	
+	/* 验证 */
+	/* $('#reply_message_form').bootstrapValidator({
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {//验证：规则
+        	content: {
+                validators: {
+                    notEmpty: {//非空验证：提示消息
+                        message: '请输入内容'
+                    },
+                    stringLength: {
+                        min: 1,
+                        max: 100,
+                        message: '最多输入100字符'
+                    }
+                }
+            }
+        }
+    }); */
+});
+</script>
+
+<div class="pull-right btn-group btn-group-xs" role="group" aria-label="...">
+
+<c:if test="${!empty message.children}">
+	<button type="button" class="btn btn-default" data-toggle="modal" data-target="#reply_list_modal_${message.id}">
+		<font class="green">${message.replyCount}</font> 条回复
+	</button>
+</c:if>
+
+<a class="btn btn-default"
+	data-toggle="collapse" href="#collapse_${message.id}"
+	data-parent="#accordion"
+	aria-expanded="false" aria-controls="collapse_${message.id}">回复 ta</a>
+</div>
+
+<div class="panel-collapse collapse" id="collapse_${message.id}">
+	<div class="well reply_content">
+		<form action="${pageContext.request.contextPath}/message/save/free.action" 
+				class="form kr_validate" id="reply_message_form" method="post">
+			<input type="hidden" name="parent_id" value="${message.id}">
+			
+			<fieldset>
+			
+			<div class="form-group" style="margin-bottom: 6px;">
+				<label class="control-label sr-only" for="reply_content_area">回复内容</label>
+				<textarea
+					required   
+					data-bv-stringlength="true" data-bv-stringlength-min="1" data-bv-stringlength-max="160" 
+					id="reply_content_area" class="form-control" rows="2" cols="66" name="content" placeholder="回复 ${message.floor} 楼："></textarea>
+			</div>
+			<div class="form-group text-right" style="margin-bottom: 0px;">
+				<input type="submit" class="btn btn-primary btn-sm"/>
+			</div>
+			
+			</fieldset>
+		</form>
+	</div>
+</div>
+

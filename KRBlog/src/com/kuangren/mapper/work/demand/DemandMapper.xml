@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kuangren.mapper.work.demand.DemandMapper" >
+  <resultMap id="BaseResultMap" type="com.kuangren.po.demand.Demand" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="timeCost" property="timeCost" jdbcType="CHAR" />
+    <result column="beginTime" property="beginTime" jdbcType="CHAR" />
+    <result column="lowestPrice" property="lowestPrice" jdbcType="DECIMAL" />
+    <result column="highestPrice" property="highestPrice" jdbcType="DECIMAL" />
+    <result column="skill" property="skill" jdbcType="VARCHAR" />
+    <result column="projectType" property="projectType" jdbcType="CHAR" />
+    <result column="place" property="place" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="contacts" property="contacts" jdbcType="CHAR" />
+    <result column="email" property="email" jdbcType="CHAR" />
+    <result column="qq" property="qq" jdbcType="CHAR" />
+    <result column="wechat" property="wechat" jdbcType="CHAR" />
+    <result column="phoneNum" property="phoneNum" jdbcType="CHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="company" property="company" jdbcType="CHAR" />
+    <result column="user_id" property="user_id" jdbcType="INTEGER" />
+    <result column="works_id" property="works_id" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.kuangren.po.demand.Demand" extends="BaseResultMap" >
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, timeCost, beginTime, lowestPrice, highestPrice, skill, projectType, place, status, 
+    createTime, contacts, email, qq, wechat, phoneNum, address, company, user_id, works_id
+  </sql>
+  <sql id="Blob_Column_List" >
+    content
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.kuangren.po.demand.DemandExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from demand
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.kuangren.po.demand.DemandExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from demand
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from demand
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from demand
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.kuangren.po.demand.DemandExample" >
+    delete from demand
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.kuangren.po.demand.Demand" >
+    insert into demand (id, timeCost, beginTime, 
+      lowestPrice, highestPrice, skill, 
+      projectType, place, status, 
+      createTime, contacts, email, 
+      qq, wechat, phoneNum, address, 
+      company, user_id, works_id, 
+      content)
+    values (#{id,jdbcType=INTEGER}, #{timeCost,jdbcType=CHAR}, #{beginTime,jdbcType=CHAR}, 
+      #{lowestPrice,jdbcType=DECIMAL}, #{highestPrice,jdbcType=DECIMAL}, #{skill,jdbcType=VARCHAR}, 
+      #{projectType,jdbcType=CHAR}, #{place,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{contacts,jdbcType=CHAR}, #{email,jdbcType=CHAR}, 
+      #{qq,jdbcType=CHAR}, #{wechat,jdbcType=CHAR}, #{phoneNum,jdbcType=CHAR}, #{address,jdbcType=VARCHAR}, 
+      #{company,jdbcType=CHAR}, #{user_id,jdbcType=INTEGER}, #{works_id,jdbcType=INTEGER}, 
+      #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.kuangren.po.demand.Demand" >
+    insert into demand
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="timeCost != null" >
+        timeCost,
+      </if>
+      <if test="beginTime != null" >
+        beginTime,
+      </if>
+      <if test="lowestPrice != null" >
+        lowestPrice,
+      </if>
+      <if test="highestPrice != null" >
+        highestPrice,
+      </if>
+      <if test="skill != null" >
+        skill,
+      </if>
+      <if test="projectType != null" >
+        projectType,
+      </if>
+      <if test="place != null" >
+        place,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+      <if test="contacts != null" >
+        contacts,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="qq != null" >
+        qq,
+      </if>
+      <if test="wechat != null" >
+        wechat,
+      </if>
+      <if test="phoneNum != null" >
+        phoneNum,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="company != null" >
+        company,
+      </if>
+      <if test="user_id != null" >
+        user_id,
+      </if>
+      <if test="works_id != null" >
+        works_id,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="timeCost != null" >
+        #{timeCost,jdbcType=CHAR},
+      </if>
+      <if test="beginTime != null" >
+        #{beginTime,jdbcType=CHAR},
+      </if>
+      <if test="lowestPrice != null" >
+        #{lowestPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="highestPrice != null" >
+        #{highestPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="skill != null" >
+        #{skill,jdbcType=VARCHAR},
+      </if>
+      <if test="projectType != null" >
+        #{projectType,jdbcType=CHAR},
+      </if>
+      <if test="place != null" >
+        #{place,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="contacts != null" >
+        #{contacts,jdbcType=CHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=CHAR},
+      </if>
+      <if test="qq != null" >
+        #{qq,jdbcType=CHAR},
+      </if>
+      <if test="wechat != null" >
+        #{wechat,jdbcType=CHAR},
+      </if>
+      <if test="phoneNum != null" >
+        #{phoneNum,jdbcType=CHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null" >
+        #{company,jdbcType=CHAR},
+      </if>
+      <if test="user_id != null" >
+        #{user_id,jdbcType=INTEGER},
+      </if>
+      <if test="works_id != null" >
+        #{works_id,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.kuangren.po.demand.DemandExample" resultType="java.lang.Integer" >
+    select count(*) from demand
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update demand
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.timeCost != null" >
+        timeCost = #{record.timeCost,jdbcType=CHAR},
+      </if>
+      <if test="record.beginTime != null" >
+        beginTime = #{record.beginTime,jdbcType=CHAR},
+      </if>
+      <if test="record.lowestPrice != null" >
+        lowestPrice = #{record.lowestPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.highestPrice != null" >
+        highestPrice = #{record.highestPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.skill != null" >
+        skill = #{record.skill,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectType != null" >
+        projectType = #{record.projectType,jdbcType=CHAR},
+      </if>
+      <if test="record.place != null" >
+        place = #{record.place,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.createTime != null" >
+        createTime = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.contacts != null" >
+        contacts = #{record.contacts,jdbcType=CHAR},
+      </if>
+      <if test="record.email != null" >
+        email = #{record.email,jdbcType=CHAR},
+      </if>
+      <if test="record.qq != null" >
+        qq = #{record.qq,jdbcType=CHAR},
+      </if>
+      <if test="record.wechat != null" >
+        wechat = #{record.wechat,jdbcType=CHAR},
+      </if>
+      <if test="record.phoneNum != null" >
+        phoneNum = #{record.phoneNum,jdbcType=CHAR},
+      </if>
+      <if test="record.address != null" >
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.company != null" >
+        company = #{record.company,jdbcType=CHAR},
+      </if>
+      <if test="record.user_id != null" >
+        user_id = #{record.user_id,jdbcType=INTEGER},
+      </if>
+      <if test="record.works_id != null" >
+        works_id = #{record.works_id,jdbcType=INTEGER},
+      </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update demand
+    set id = #{record.id,jdbcType=INTEGER},
+      timeCost = #{record.timeCost,jdbcType=CHAR},
+      beginTime = #{record.beginTime,jdbcType=CHAR},
+      lowestPrice = #{record.lowestPrice,jdbcType=DECIMAL},
+      highestPrice = #{record.highestPrice,jdbcType=DECIMAL},
+      skill = #{record.skill,jdbcType=VARCHAR},
+      projectType = #{record.projectType,jdbcType=CHAR},
+      place = #{record.place,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=TINYINT},
+      createTime = #{record.createTime,jdbcType=TIMESTAMP},
+      contacts = #{record.contacts,jdbcType=CHAR},
+      email = #{record.email,jdbcType=CHAR},
+      qq = #{record.qq,jdbcType=CHAR},
+      wechat = #{record.wechat,jdbcType=CHAR},
+      phoneNum = #{record.phoneNum,jdbcType=CHAR},
+      address = #{record.address,jdbcType=VARCHAR},
+      company = #{record.company,jdbcType=CHAR},
+      user_id = #{record.user_id,jdbcType=INTEGER},
+      works_id = #{record.works_id,jdbcType=INTEGER},
+      content = #{record.content,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update demand
+    set id = #{record.id,jdbcType=INTEGER},
+      timeCost = #{record.timeCost,jdbcType=CHAR},
+      beginTime = #{record.beginTime,jdbcType=CHAR},
+      lowestPrice = #{record.lowestPrice,jdbcType=DECIMAL},
+      highestPrice = #{record.highestPrice,jdbcType=DECIMAL},
+      skill = #{record.skill,jdbcType=VARCHAR},
+      projectType = #{record.projectType,jdbcType=CHAR},
+      place = #{record.place,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=TINYINT},
+      createTime = #{record.createTime,jdbcType=TIMESTAMP},
+      contacts = #{record.contacts,jdbcType=CHAR},
+      email = #{record.email,jdbcType=CHAR},
+      qq = #{record.qq,jdbcType=CHAR},
+      wechat = #{record.wechat,jdbcType=CHAR},
+      phoneNum = #{record.phoneNum,jdbcType=CHAR},
+      address = #{record.address,jdbcType=VARCHAR},
+      company = #{record.company,jdbcType=CHAR},
+      user_id = #{record.user_id,jdbcType=INTEGER},
+      works_id = #{record.works_id,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kuangren.po.demand.Demand" >
+    update demand
+    <set >
+      <if test="timeCost != null" >
+        timeCost = #{timeCost,jdbcType=CHAR},
+      </if>
+      <if test="beginTime != null" >
+        beginTime = #{beginTime,jdbcType=CHAR},
+      </if>
+      <if test="lowestPrice != null" >
+        lowestPrice = #{lowestPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="highestPrice != null" >
+        highestPrice = #{highestPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="skill != null" >
+        skill = #{skill,jdbcType=VARCHAR},
+      </if>
+      <if test="projectType != null" >
+        projectType = #{projectType,jdbcType=CHAR},
+      </if>
+      <if test="place != null" >
+        place = #{place,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="contacts != null" >
+        contacts = #{contacts,jdbcType=CHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=CHAR},
+      </if>
+      <if test="qq != null" >
+        qq = #{qq,jdbcType=CHAR},
+      </if>
+      <if test="wechat != null" >
+        wechat = #{wechat,jdbcType=CHAR},
+      </if>
+      <if test="phoneNum != null" >
+        phoneNum = #{phoneNum,jdbcType=CHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null" >
+        company = #{company,jdbcType=CHAR},
+      </if>
+      <if test="user_id != null" >
+        user_id = #{user_id,jdbcType=INTEGER},
+      </if>
+      <if test="works_id != null" >
+        works_id = #{works_id,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.kuangren.po.demand.Demand" >
+    update demand
+    set timeCost = #{timeCost,jdbcType=CHAR},
+      beginTime = #{beginTime,jdbcType=CHAR},
+      lowestPrice = #{lowestPrice,jdbcType=DECIMAL},
+      highestPrice = #{highestPrice,jdbcType=DECIMAL},
+      skill = #{skill,jdbcType=VARCHAR},
+      projectType = #{projectType,jdbcType=CHAR},
+      place = #{place,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      contacts = #{contacts,jdbcType=CHAR},
+      email = #{email,jdbcType=CHAR},
+      qq = #{qq,jdbcType=CHAR},
+      wechat = #{wechat,jdbcType=CHAR},
+      phoneNum = #{phoneNum,jdbcType=CHAR},
+      address = #{address,jdbcType=VARCHAR},
+      company = #{company,jdbcType=CHAR},
+      user_id = #{user_id,jdbcType=INTEGER},
+      works_id = #{works_id,jdbcType=INTEGER},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kuangren.po.demand.Demand" >
+    update demand
+    set timeCost = #{timeCost,jdbcType=CHAR},
+      beginTime = #{beginTime,jdbcType=CHAR},
+      lowestPrice = #{lowestPrice,jdbcType=DECIMAL},
+      highestPrice = #{highestPrice,jdbcType=DECIMAL},
+      skill = #{skill,jdbcType=VARCHAR},
+      projectType = #{projectType,jdbcType=CHAR},
+      place = #{place,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      contacts = #{contacts,jdbcType=CHAR},
+      email = #{email,jdbcType=CHAR},
+      qq = #{qq,jdbcType=CHAR},
+      wechat = #{wechat,jdbcType=CHAR},
+      phoneNum = #{phoneNum,jdbcType=CHAR},
+      address = #{address,jdbcType=VARCHAR},
+      company = #{company,jdbcType=CHAR},
+      user_id = #{user_id,jdbcType=INTEGER},
+      works_id = #{works_id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

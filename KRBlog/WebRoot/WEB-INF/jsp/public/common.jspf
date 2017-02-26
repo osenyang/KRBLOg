@@ -1,0 +1,75 @@
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt"  prefix="fmt"%>
+
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+ path +"/";
+%>
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- 确定绘制当前页面所应该采用的 IE 版本 -->
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+<link rel="stylesheet" href="<%=path %>/bootstrap/css/bootstrap.min.css" >
+
+<%-- <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/style/css/jquery.dataTables.min.css" /> --%>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/style/css/dataTables.bootstrap.min.css" />
+<!-- 输入验证 -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/BootstrapValidator-0.5.2/css/bootstrapValidator.min.css" />
+
+<!-- select2 css -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/jQuery-Select2-4.0.1/css/select2.min.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/jQuery-Select2-4.0.1/css/select2-bootstrap.css" /> 
+<!-- 下面是我自定义的 css --> 
+<link rel="stylesheet" href="${pageContext.request.contextPath}/style/css/pageCommon.css" />
+
+<!-- JS =========================================== -->
+<script src="${pageContext.request.contextPath}/js/jquery-1.11.1.min.js"></script>
+<script src="${pageContext.request.contextPath}/bootstrap/js/bootstrap.min.js"></script>
+<!-- 输入验证 -->
+<script src="${pageContext.request.contextPath}/BootstrapValidator-0.5.2/js/bootstrapValidator.min.js"></script>
+<script src="${pageContext.request.contextPath}/BootstrapValidator-0.5.2/js/language/zh_CN.js"></script>
+
+<script src="${pageContext.request.contextPath}/js/eModal.min.js"></script>
+<!-- 输入验证，jQuery validate 方式。后面那个是中文包 -->
+<script src="${pageContext.request.contextPath}/js/jquery.validate.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/messages_zh.js"></script>
+<!-- data table 下面两个都要有 -->
+<script src="${pageContext.request.contextPath}/js/jquery.dataTables.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/dataTables.bootstrap.min.js"></script>
+<!-- jquery.noty -->
+<script src="${pageContext.request.contextPath}/noty/packaged/jquery.noty.packaged.min.js"></script>
+<!-- select2 -->
+<script src="${pageContext.request.contextPath}/jQuery-Select2-4.0.1/js/select2.full.min.js"></script>
+<script src="${pageContext.request.contextPath}/jQuery-Select2-4.0.1/js/i18n/zh_CN.js"></script>
+
+<!-- 下面是我自定义的 js -->
+<script src="${pageContext.request.contextPath}/js/myBase.js"></script>
+
+<!-- ============================================================ -->
+<script>
+$(function(){
+	//弹出框，提示操作结果
+	var text = "${result.text}";
+	//if("" != text){
+	if(text){
+		var type = "${result.type}"
+		switch(type) {
+		    case "error":
+		    	noty({text: text, type: type, timeout: 3000});
+		        break;
+		        
+		    case "warning":
+		    	noty({text: text, type: type, timeout: 2000});
+		        break;
+		        
+		    default:
+		    	noty({text: text, type: type});
+		}
+	}  
+});
+
+
+</script>

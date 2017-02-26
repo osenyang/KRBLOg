@@ -1,0 +1,37 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    
+
+<div class="btn-group btn-group-xs" role="group" aria-label="...">
+  <a href="${pageContext.request.contextPath}/log/setTop.action?id=${log.id}" class="btn btn-default">置顶</a>
+  <a href="${pageContext.request.contextPath}/log/setStatus.action?id=${log.id}&statusCode=6" class="btn btn-default">加精</a>
+
+  <div class="btn-group btn-group-xs" role="group">
+    <!-- <button type="button" class="btn btn-default btn-xs">更多</button> -->
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+      <span class="caret"></span>
+      <!-- <span class="sr-only">这两个注释打开的话，倒三角会分开点击</span> -->
+    </button>
+    <ul class="dropdown-menu">
+      <li><a href="${pageContext.request.contextPath}/log/cancelTop.action?id=${log.id}">取消置顶</a></li>
+      <li><a href="${pageContext.request.contextPath}/log/setStatus.action?id=${log.id}&statusCode=1">取消加精</a></li>
+      <li role="separator" class="divider"></li>
+      <li><a onclick="$.kr_form('${pageContext.request.contextPath}/log/encryptUI.action?id=${log.id}', 'log_encrypt_form', '加密', 'sm');"
+             href="#">加密</a></li>
+      <li role="separator" class="divider"></li>
+      <li><%-- <a    onclick="$.kr_form('${pageContext.request.contextPath}/log/saveUI.action?id=${log.id}', 'log_form', '我的日志', 'lg');"
+                href="#">
+                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 修改</a> --%>
+      	  <a href="${pageContext.request.contextPath}/log/saveUI.action?id=${log.id}&publish=1"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 修改</a>
+      </li>
+      <li><a onclick="$.kr_confirm('${pageContext.request.contextPath}/log/delete.action?id=${log.id}', '确定删除此记录？');" 
+            href="#">
+            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                 删除</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+

@@ -1,0 +1,23 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+
+<div class="btn-group btn-group-xs" role="group" aria-label="...">
+    <!-- data-toggle="modal" data-target="#encrypt_modal" -->
+	<%-- <a href="#" class="btn btn-default"
+		onclick="$.kr_form('${pageContext.request.contextPath}/user/encryptUI.action?id=${user.id}', 'user_encrypt_form', '加密', 'sm');">
+	加密</a>  --%>
+		
+	<a  onclick="$.kr_confirm('${pageContext.request.contextPath}/free/user/delete/manage.action?id=${user.id}', '确定禁用此用户吗？');"
+		class="btn btn-default"
+		href="#"> <span class="glyphicon glyphicon-trash"
+		aria-hidden="true"></span>
+	禁用</a>
+	<a  onclick="$.kr_confirm('${pageContext.request.contextPath}/free/user/recover/manage.action?id=${user.id}', '确定恢复此用户吗？');"
+		class="btn btn-default"
+		href="#"> <span class="glyphicon glyphicon-ok"
+		aria-hidden="true"></span>
+	恢复</a>
+
+</div>
+
+

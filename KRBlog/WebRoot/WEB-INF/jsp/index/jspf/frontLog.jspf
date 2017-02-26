@@ -1,0 +1,44 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt"  prefix="fmt"%>
+
+<style>
+	.min_height{
+		min-height: 360px;
+	}
+</style>
+
+<div class="panel panel-info min_height">
+  <div class="panel-heading">
+    <h3 class="panel-title">最新日志
+    <a id="more_log" href="${pageContext.request.contextPath}/log/list.action" data-toggle="tooltip" data-placement="top" title="更多">
+    	<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+    </a>
+    </h3>
+  </div>
+  <div class="panel-body">
+    <table class="table table-striped">
+    	<thead>
+    		<tr>
+    			<th>内容</th>
+    			<th width="20%">发表时间</th>
+    		</tr>
+    	</thead>
+    	
+    	<tbody>
+    		<c:forEach items="${logs}" var="log">
+    		<tr>
+    			<td>
+    				<font class="elite"><c:if test="${log.status == 6}">[精华]</c:if></font>
+    				${log.title}
+    			</td>
+    			<td><fmt:formatDate value="${log.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+    		</tr>
+    		</c:forEach>
+    	</tbody>
+    	
+    	<tfoot></tfoot>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,702 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kuangren.mapper.social.circle.MessageMapper" >
+  <resultMap id="BaseResultMap" type="com.kuangren.po.message.Message" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="ip" property="ip" jdbcType="CHAR" />
+    <result column="floor" property="floor" jdbcType="INTEGER" />
+    <result column="replyCount" property="replyCount" jdbcType="INTEGER" />
+    <result column="sendWord" property="sendWord" jdbcType="BIT" />
+    <result column="favor" property="favor" jdbcType="INTEGER" />
+    <result column="trample" property="trample" jdbcType="INTEGER" />
+    <result column="nickname" property="nickname" jdbcType="CHAR" />
+    <result column="parent_id" property="parent_id" jdbcType="INTEGER" />
+    <result column="user_id" property="user_id" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, title, content, createTime, status, ip, floor, replyCount, sendWord, favor, trample, 
+    nickname, parent_id, user_id
+  </sql>
+  
+  
+  <!-- 查询出“留言”列表，包含“留言”的父“留言”
+	将整个查询的结果映射到com.kuangren.po.message.MessageCustom中
+	 -->
+	<resultMap type="com.kuangren.po.message.MessageCustom" id="GetListResultMap">
+		<!-- 配置映射的“留言”表信息 -->
+		<!-- id：指定查询列中的唯 一标识，“留言”表信息的中的唯 一标识，如果有多个列组成唯一标识，配置多个id
+			column：“留言”表信息的唯 一标识 列
+			property：“留言”表信息的唯 一标识 列所映射到Orders中哪个属性
+		  -->
+		<id column="child_id" property="id"/>
+		
+		<result column="child_createTime" property="createTime"/>
+		<result column="child_status" property="status"/>
+		<result column="child_title" property="title"/>
+		<result column="child_content" property="content"/>
+		<result column="child_ip" property="ip"/>
+		<result column="child_floor" property="floor"/>
+		<result column="child_replyCount" property="replyCount"/>
+		<result column="child_sendWord" property="sendWord"/>
+		<result column="child_parent_id" property="parent_id"/>
+		<result column="child_favor" property="favor"/>
+		<result column="child_trample" property="trample"/>
+		<result column="child_nickname" property="nickname"/>
+		<result column="child_user_id" property="user_id"/>
+		
+		<!-- 配置映射的关联的“留言”表信息 -->
+		<!-- association：用于映射关联查询单个对象的信息
+		property：要将关联查询的“父“留言””信息映射到MessageCustom中哪个属性
+		 -->
+		<association property="parent"  javaType="com.kuangren.po.message.Message">
+			<!-- id：关联查询“留言”的唯 一标识
+			column：指定唯 一标识“留言”表信息的列
+			javaType：映射到message的哪个属性
+			 -->
+			<id column="parent_id" property="id"/>
+			<result column="parent_createTime" property="createTime"/>
+			<result column="parent_status" property="status"/>
+			<result column="parent_title" property="title"/>
+			<result column="parent_content" property="content"/>
+			<result column="parent_ip" property="ip"/>
+			<result column="parent_floor" property="floor"/>
+			<result column="parent_replyCount" property="replyCount"/>
+			<result column="parent_sendWord" property="sendWord"/>
+			<result column="parent_parent_id" property="parent_id"/>
+			<result column="parent_favor" property="favor"/>
+			<result column="parent_trample" property="trample"/>
+			<result column="parent_nickname" property="nickname"/>
+		
+		</association>
+		
+		<association property="user"  javaType="com.kuangren.po.user.UserCustom"
+			 select="com.kuangren.mapper.system.UserMapper.selectByPrimaryKey" column="child_user_id">
+			<!-- 实现对用户信息进行延迟加载 -->
+		</association>
+	</resultMap>
+	
+	<resultMap type="com.kuangren.po.message.MessageCustom" id="GetFullListResultMap" extends="GetListResultMap">
+		<!-- “留言表”明细信息
+		一个“留言表”关联查询出了多条明细，要使用collection进行映射
+		collection：对关联查询到多条记录映射到集合对象中
+		property：将关联查询到多条记录映射到cn.itcast.mybatis.po.Orders哪个属性
+		ofType：指定映射到list集合属性中pojo的类型
+		 -->
+		 <collection property="children" ofType="com.kuangren.po.message.Message">
+		 	<!-- id：“留言表”明细唯 一标识
+		 	property:要将“留言表”明细的唯 一标识 映射到com.kuangren.po.message.Message的哪个属性
+		 	  -->
+		 	<id column="grandson_id" property="id"/>
+			<result column="grandson_createTime" property="createTime"/>
+			<result column="grandson_status" property="status"/>
+			<result column="grandson_title" property="title"/>
+			<result column="grandson_content" property="content"/>
+			<result column="grandson_ip" property="ip"/>
+			<result column="grandson_floor" property="floor"/>
+			<result column="grandson_replyCount" property="replyCount"/>
+			<result column="grandson_sendWord" property="sendWord"/>
+			<result column="grandson_parent_id" property="parent_id"/>
+			<result column="grandson_favor" property="favor"/>
+			<result column="grandson_trample" property="trample"/>
+			<result column="grandson_nickname" property="nickname"/>
+		 </collection>
+		 
+	</resultMap>
+	
+	<resultMap type="com.kuangren.po.message.MessageCustom" id="GetFullEntityResultMap" extends="GetListResultMap">
+		<id column="parent_id" property="id"/>
+		<result column="parent_createTime" property="createTime"/>
+		<result column="parent_status" property="status"/>
+		<result column="parent_title" property="title"/>
+		<result column="parent_content" property="content"/>
+		<result column="parent_ip" property="ip"/>
+		<result column="parent_floor" property="floor"/>
+		<result column="parent_replyCount" property="replyCount"/>
+		<result column="parent_sendWord" property="sendWord"/>
+		<result column="parent_parent_id" property="parent_id"/>
+		<result column="parent_favor" property="favor"/>
+		<result column="parent_trample" property="trample"/>
+		<result column="parent_nickname" property="nickname"/>
+		
+		 <collection property="children" ofType="com.kuangren.po.message.Message">
+		 	<id column="child_id" property="id"/>
+		
+			<result column="child_createTime" property="createTime"/>
+			<result column="child_status" property="status"/>
+			<result column="child_title" property="title"/>
+			<result column="child_content" property="content"/>
+			<result column="child_ip" property="ip"/>
+			<result column="child_floor" property="floor"/>
+			<result column="child_replyCount" property="replyCount"/>
+			<result column="child_sendWord" property="sendWord"/>
+			<result column="child_parent_id" property="parent_id"/>
+			<result column="child_favor" property="favor"/>
+			<result column="child_trample" property="trample"/>
+			<result column="child_nickname" property="nickname"/>
+		 </collection>
+	</resultMap>
+	
+	<select id="getList" resultMap="GetFullListResultMap">
+		SELECT
+			child.id child_id,
+			child.title child_title,
+			child.content child_content,
+			child.createTime child_createTime,
+			child.status child_status,
+			child.ip child_ip,
+			child.floor child_floor,
+			child.replyCount child_replyCount,
+			child.sendWord child_sendWord,
+			child.parent_id child_parent_id,
+			child.favor child_favor,
+			child.trample child_trample,
+			child.nickname child_nickname,
+			child.user_id child_user_id,
+			parent.id parent_id,
+			parent.title parent_title,
+			parent.content parent_content,
+			parent.createTime parent_createTime,
+			parent.status parent_status,
+			parent.ip parent_ip,
+			parent.floor parent_floor,
+			parent.replyCount parent_replyCount,
+			parent.sendWord parent_sendWord,
+			parent.parent_id parent_parent_id,
+			parent.favor parent_favor,
+			parent.trample parent_trample,
+			parent.nickname parent_nickname,
+			grandson.id grandson_id,
+			grandson.title grandson_title,
+			grandson.content grandson_content,
+			grandson.createTime grandson_createTime,
+			grandson.status grandson_status,
+			grandson.ip grandson_ip,
+			grandson.floor grandson_floor,
+			grandson.replyCount grandson_replyCount,
+			grandson.sendWord grandson_sendWord,
+			grandson.parent_id grandson_parent_id,
+			grandson.favor grandson_favor,
+			grandson.trample grandson_trample,
+			grandson.nickname grandson_nickname
+		FROM
+			message child
+		LEFT OUTER JOIN message parent ON child.parent_id = parent.id
+		LEFT OUTER JOIN message grandson ON child.id = grandson.parent_id
+		ORDER BY
+			child.createTime DESC
+	</select>
+	
+	<select id="getFullEntity" resultMap="GetFullEntityResultMap" parameterType="int">
+		SELECT
+			parent.id parent_id,
+			parent.title parent_title,
+			parent.content parent_content,
+			parent.createTime parent_createTime,
+			parent.status parent_status,
+			parent.ip parent_ip,
+			parent.floor parent_floor,
+			parent.replyCount parent_replyCount,
+			parent.sendWord parent_sendWord,
+			parent.parent_id parent_parent_id,
+			parent.favor parent_favor,
+			parent.trample parent_trample,
+			parent.nickname parent_nickname,
+			child.id child_id,
+			child.title child_title,
+			child.content child_content,
+			child.createTime child_createTime,
+			child.status child_status,
+			child.ip child_ip,
+			child.floor child_floor,
+			child.replyCount child_replyCount,
+			child.sendWord child_sendWord,
+			child.parent_id child_parent_id,
+			child.favor child_favor,
+			child.trample child_trample,
+			child.nickname child_nickname
+			
+		FROM
+			message parent
+		LEFT OUTER JOIN message child ON parent.id = child.parent_id
+		WHERE parent.id = #{id}
+	</select>
+	
+	<!-- 查询留言前面多少条记录（排序：最新创建） -->
+  <select id="getListFront" resultType="com.kuangren.po.message.MessageCustom" parameterType="com.kuangren.po.message.MessageQueryVo">
+  	SELECT
+		*
+	FROM
+		message
+	ORDER BY
+		createTime DESC
+	LIMIT #{pagingBean.limitFront}
+  </select>
+  
+	<!-- 获取列表，带分页，真分页 -->
+  <select id="getPagingList" resultMap="GetFullListResultMap" parameterType="com.kuangren.po.message.MessageQueryVo">
+  	<!-- 方案2：分两个步骤查询，1查询单表的真实的id列表，2，用刚刚的分页id列表去做条件查询关联查询 -->
+<!--   	SELECT
+		child.id child_id,
+		child.title child_title,
+		child.content child_content,
+		child.createTime child_createTime,
+		child.status child_status,
+		child.ip child_ip,
+		child.floor child_floor,
+		child.replyCount child_replyCount,
+		child.sendWord child_sendWord,
+		child.parent_id child_parent_id,
+		child.favor child_favor,
+		child.trample child_trample,
+		child.nickname child_nickname,
+		child.user_id child_user_id,
+		parent.id parent_id,
+		parent.title parent_title,
+		parent.content parent_content,
+		parent.createTime parent_createTime,
+		parent.status parent_status,
+		parent.ip parent_ip,
+		parent.floor parent_floor,
+		parent.replyCount parent_replyCount,
+		parent.sendWord parent_sendWord,
+		parent.parent_id parent_parent_id,
+		parent.favor parent_favor,
+		parent.trample parent_trample,
+		parent.nickname parent_nickname,
+		grandson.id grandson_id,
+		grandson.title grandson_title,
+		grandson.content grandson_content,
+		grandson.createTime grandson_createTime,
+		grandson.status grandson_status,
+		grandson.ip grandson_ip,
+		grandson.floor grandson_floor,
+		grandson.replyCount grandson_replyCount,
+		grandson.sendWord grandson_sendWord,
+		grandson.parent_id grandson_parent_id,
+		grandson.favor grandson_favor,
+		grandson.trample grandson_trample,
+		grandson.nickname grandson_nickname
+	FROM
+		message child
+	LEFT OUTER JOIN message parent ON child.parent_id = parent.id
+	LEFT OUTER JOIN message grandson ON child.id = grandson.parent_id
+	WHERE child.id in 
+		<foreach collection="limitIds" item="user_id" open="(" close=")" separator=",">
+			#{user_id}
+		</foreach>
+	ORDER BY
+		child.createTime DESC -->
+		
+		<!-- 方案3：用子查询 -->
+  	SELECT
+		child.id child_id,
+		child.title child_title,
+		child.content child_content,
+		child.createTime child_createTime,
+		child.status child_status,
+		child.ip child_ip,
+		child.floor child_floor,
+		child.replyCount child_replyCount,
+		child.sendWord child_sendWord,
+		child.parent_id child_parent_id,
+		child.favor child_favor,
+		child.trample child_trample,
+		child.nickname child_nickname,
+		child.user_id child_user_id,
+		parent.id parent_id,
+		parent.title parent_title,
+		parent.content parent_content,
+		parent.createTime parent_createTime,
+		parent.status parent_status,
+		parent.ip parent_ip,
+		parent.floor parent_floor,
+		parent.replyCount parent_replyCount,
+		parent.sendWord parent_sendWord,
+		parent.parent_id parent_parent_id,
+		parent.favor parent_favor,
+		parent.trample parent_trample,
+		parent.nickname parent_nickname,
+		grandson.id grandson_id,
+		grandson.title grandson_title,
+		grandson.content grandson_content,
+		grandson.createTime grandson_createTime,
+		grandson.status grandson_status,
+		grandson.ip grandson_ip,
+		grandson.floor grandson_floor,
+		grandson.replyCount grandson_replyCount,
+		grandson.sendWord grandson_sendWord,
+		grandson.parent_id grandson_parent_id,
+		grandson.favor grandson_favor,
+		grandson.trample grandson_trample,
+		grandson.nickname grandson_nickname
+	FROM
+		(SELECT m.* FROM message m WHERE m.status &lt;&gt; 0 AND m.status &lt;&gt; 3 ORDER BY m.createTime DESC LIMIT #{pagingBean.startIndex},#{pagingBean.pageSize}) child
+	LEFT OUTER JOIN message parent ON child.parent_id = parent.id
+	LEFT OUTER JOIN message grandson ON child.id = grandson.parent_id
+	ORDER BY
+		child.createTime DESC
+  </select>
+  
+  <select id="getLimitIds" resultType="int" parameterType="com.kuangren.po.message.MessageQueryVo">
+		SELECT 
+			id 
+		FROM 
+			message 
+		ORDER BY
+			createTime DESC
+		LIMIT #{pagingBean.startIndex},#{pagingBean.pageSize}
+  </select>
+  
+  <!-- <select id="count" resultType="int">
+  	SELECT
+		count(child.id)
+	FROM
+		message child
+	LEFT OUTER JOIN message parent ON child.parent_id = parent.id
+	LEFT OUTER JOIN message grandson ON child.id = grandson.parent_id
+  </select> -->
+	  
+	  
+	  
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.kuangren.po.message.MessageExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from message
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from message
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from message
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.kuangren.po.message.MessageExample" >
+    delete from message
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.kuangren.po.message.Message" >
+  	<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+			SELECT LAST_INSERT_ID()
+	</selectKey>
+		
+    insert into message (id, title, content, 
+      createTime, status, ip, 
+      floor, replyCount, sendWord, 
+      favor, trample, nickname, 
+      parent_id, user_id)
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{ip,jdbcType=CHAR}, 
+      #{floor,jdbcType=INTEGER}, #{replyCount,jdbcType=INTEGER}, #{sendWord,jdbcType=BIT}, 
+      #{favor,jdbcType=INTEGER}, #{trample,jdbcType=INTEGER}, #{nickname,jdbcType=CHAR}, 
+      #{parent_id,jdbcType=INTEGER}, #{user_id,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.kuangren.po.message.Message" >
+  	<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+			SELECT LAST_INSERT_ID()
+	</selectKey>
+	
+    insert into message
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+      <if test="floor != null" >
+        floor,
+      </if>
+      <if test="replyCount != null" >
+        replyCount,
+      </if>
+      <if test="sendWord != null" >
+        sendWord,
+      </if>
+      <if test="favor != null" >
+        favor,
+      </if>
+      <if test="trample != null" >
+        trample,
+      </if>
+      <if test="nickname != null" >
+        nickname,
+      </if>
+      <if test="parent_id != null" >
+        parent_id,
+      </if>
+      <if test="user_id != null" >
+        user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=CHAR},
+      </if>
+      <if test="floor != null" >
+        #{floor,jdbcType=INTEGER},
+      </if>
+      <if test="replyCount != null" >
+        #{replyCount,jdbcType=INTEGER},
+      </if>
+      <if test="sendWord != null" >
+        #{sendWord,jdbcType=BIT},
+      </if>
+      <if test="favor != null" >
+        #{favor,jdbcType=INTEGER},
+      </if>
+      <if test="trample != null" >
+        #{trample,jdbcType=INTEGER},
+      </if>
+      <if test="nickname != null" >
+        #{nickname,jdbcType=CHAR},
+      </if>
+      <if test="parent_id != null" >
+        #{parent_id,jdbcType=INTEGER},
+      </if>
+      <if test="user_id != null" >
+        #{user_id,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.kuangren.po.message.MessageExample" resultType="java.lang.Integer" >
+    select count(*) from message
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update message
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.title != null" >
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        createTime = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.ip != null" >
+        ip = #{record.ip,jdbcType=CHAR},
+      </if>
+      <if test="record.floor != null" >
+        floor = #{record.floor,jdbcType=INTEGER},
+      </if>
+      <if test="record.replyCount != null" >
+        replyCount = #{record.replyCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.sendWord != null" >
+        sendWord = #{record.sendWord,jdbcType=BIT},
+      </if>
+      <if test="record.favor != null" >
+        favor = #{record.favor,jdbcType=INTEGER},
+      </if>
+      <if test="record.trample != null" >
+        trample = #{record.trample,jdbcType=INTEGER},
+      </if>
+      <if test="record.nickname != null" >
+        nickname = #{record.nickname,jdbcType=CHAR},
+      </if>
+      <if test="record.parent_id != null" >
+        parent_id = #{record.parent_id,jdbcType=INTEGER},
+      </if>
+      <if test="record.user_id != null" >
+        user_id = #{record.user_id,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update message
+    set id = #{record.id,jdbcType=INTEGER},
+      title = #{record.title,jdbcType=VARCHAR},
+      content = #{record.content,jdbcType=VARCHAR},
+      createTime = #{record.createTime,jdbcType=TIMESTAMP},
+      status = #{record.status,jdbcType=TINYINT},
+      ip = #{record.ip,jdbcType=CHAR},
+      floor = #{record.floor,jdbcType=INTEGER},
+      replyCount = #{record.replyCount,jdbcType=INTEGER},
+      sendWord = #{record.sendWord,jdbcType=BIT},
+      favor = #{record.favor,jdbcType=INTEGER},
+      trample = #{record.trample,jdbcType=INTEGER},
+      nickname = #{record.nickname,jdbcType=CHAR},
+      parent_id = #{record.parent_id,jdbcType=INTEGER},
+      user_id = #{record.user_id,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kuangren.po.message.Message" >
+    update message
+    <set >
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=CHAR},
+      </if>
+      <if test="floor != null" >
+        floor = #{floor,jdbcType=INTEGER},
+      </if>
+      <if test="replyCount != null" >
+        replyCount = #{replyCount,jdbcType=INTEGER},
+      </if>
+      <if test="sendWord != null" >
+        sendWord = #{sendWord,jdbcType=BIT},
+      </if>
+      <if test="favor != null" >
+        favor = #{favor,jdbcType=INTEGER},
+      </if>
+      <if test="trample != null" >
+        trample = #{trample,jdbcType=INTEGER},
+      </if>
+      <if test="nickname != null" >
+        nickname = #{nickname,jdbcType=CHAR},
+      </if>
+      <if test="parent_id != null" >
+        parent_id = #{parent_id,jdbcType=INTEGER},
+      </if>
+      <if test="user_id != null" >
+        user_id = #{user_id,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kuangren.po.message.Message" >
+    update message
+    set title = #{title,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT},
+      ip = #{ip,jdbcType=CHAR},
+      floor = #{floor,jdbcType=INTEGER},
+      replyCount = #{replyCount,jdbcType=INTEGER},
+      sendWord = #{sendWord,jdbcType=BIT},
+      favor = #{favor,jdbcType=INTEGER},
+      trample = #{trample,jdbcType=INTEGER},
+      nickname = #{nickname,jdbcType=CHAR},
+      parent_id = #{parent_id,jdbcType=INTEGER},
+      user_id = #{user_id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

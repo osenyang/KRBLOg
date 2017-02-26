@@ -1,0 +1,54 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+
+<script type="text/javascript">
+    $(function(){
+        
+        $('#kr_modal_lg').on('hidden.bs.modal', function (e) {
+            parent.location.reload();
+        	//location.reload();
+        });
+        
+        $('#kr_modal_sm').on('hidden.bs.modal', function (e) {
+            parent.location.reload();
+        	//location.reload();
+        });
+        // 上传图片的模态框
+        $('#upload_img_modal_lg').on('hidden.bs.modal', function (e) {
+        	var albumId = $("#album_id").val();
+        	/* $.ajax({
+                type: 'POST',
+                url: "${pageContext.request.contextPath}/album/cancelUpload.action",
+                data: {id : albumId},
+                dataType: 'html'
+            }); */
+        	
+        	var url = "${pageContext.request.contextPath}/album/detail.action?id=" + albumId;
+        	window.location.href = url;
+        	
+        });
+    });
+    
+</script>
+
+<div id="upload_img_modal_lg" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+    </div><!-- /modal-content -->
+  </div>
+</div>
+
+<div id="kr_modal_lg" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+    </div><!-- /modal-content -->
+  </div>
+</div>
+
+
+<div id="kr_modal_sm" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+    </div><!-- /modal-content -->
+  </div>
+</div>

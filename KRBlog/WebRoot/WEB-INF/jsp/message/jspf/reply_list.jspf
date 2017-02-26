@@ -1,0 +1,36 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+
+<style>
+.grandson_div {
+	margin-bottom: 6px;
+	border-bottom: 1px solid #ddd;
+	
+	padding: 2px;
+}
+</style>
+
+<!-- Modal -->
+<div class="modal fade" id="reply_list_modal_${message.id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title" id="myModalLabel">『 ${message.floor} 楼<c:if test="${message.nickname != null}"><font class="green">"${message.nickname}"</font></c:if>说：${message.content} 』 的所有回复</h5>
+      </div>
+      <div class="modal-body">
+        <c:forEach items="${message.children}" var="grandson">
+        	<div class="grandson_div">
+	        	<div class="grandson_content">第 ${grandson.floor} 楼<c:if test="${grandson.nickname != null}">"${grandson.nickname}"</c:if>说：
+	        		<br>
+	        		<font style="color: #337AB7;">${grandson.content}</font></div>
+	        	<div class="grandson_time">回复时间：<fmt:formatDate value="${grandson.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></div>
+        	</div>
+        </c:forEach>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
+      </div>
+    </div>
+  </div>
+</div>

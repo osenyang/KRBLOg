@@ -1,0 +1,63 @@
+body {
+	font-family: "Microsoft YaHei", Helvetica, Tahoma, Arial;/* 微软雅黑 */
+	font-size: 12px;
+	color: #666666;
+	
+	padding-top: 70px;
+	
+	position: relative;
+	
+	/* background-color: #f9fdfd; */
+	background-color: #fff;
+}
+
+#kr_main {
+	min-height: 378px;
+}
+
+.orange {
+	color: #EE7942;
+}
+.green {
+	color: green;
+}
+.blue {
+	color: #337AB7;
+}
+
+.font_content {
+	display: block;
+	color: #337ab7;
+}
+/* 置顶 */
+.top {
+	color: green;
+}
+/* 加精 */
+.elite {
+	color: orange;
+}
+/* 返回顶部按钮 */
+#goTopBtn {
+	position: fixed;
+	bottom: 36px;
+	line-height: 35px; 
+	background-color: #337AB7;
+	color: #FFF;
+	width: 36px;
+	height: 36px;
+	cursor: pointer;
+	display: none;
+	/* border: 1px solid #337AB7; */
+	z-index: 999;
+	border-radius: 4px;
+	padding-left: 6px;
+	font-weight: bolder;
+	/*opacity: .7;  透明度 */
+}
+
+#more_mood,
+#more_log,
+#more_message {
+	float: right;
+}

@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kuangren.mapper.work.show.WorksMapper" >
+  <resultMap id="BaseResultMap" type="com.kuangren.po.works.Works" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="CHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="environment" property="environment" jdbcType="VARCHAR" />
+    <result column="tool" property="tool" jdbcType="VARCHAR" />
+    <result column="timeCost" property="timeCost" jdbcType="CHAR" />
+    <result column="beginTime" property="beginTime" jdbcType="TIMESTAMP" />
+    <result column="numOfDeveloper" property="numOfDeveloper" jdbcType="TINYINT" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="seeCount" property="seeCount" jdbcType="INTEGER" />
+    <result column="replyCount" property="replyCount" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="type" property="type" jdbcType="CHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.kuangren.po.works.Works" extends="BaseResultMap" >
+    <result column="detail" property="detail" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, title, description, environment, tool, timeCost, beginTime, numOfDeveloper, createTime, 
+    seeCount, replyCount, status, type
+  </sql>
+  <sql id="Blob_Column_List" >
+    detail
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.kuangren.po.works.WorksExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from works
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.kuangren.po.works.WorksExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from works
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from works
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from works
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.kuangren.po.works.WorksExample" >
+    delete from works
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.kuangren.po.works.Works" >
+    insert into works (id, title, description, 
+      environment, tool, timeCost, 
+      beginTime, numOfDeveloper, createTime, 
+      seeCount, replyCount, status, 
+      type, detail)
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=CHAR}, #{description,jdbcType=VARCHAR}, 
+      #{environment,jdbcType=VARCHAR}, #{tool,jdbcType=VARCHAR}, #{timeCost,jdbcType=CHAR}, 
+      #{beginTime,jdbcType=TIMESTAMP}, #{numOfDeveloper,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{seeCount,jdbcType=INTEGER}, #{replyCount,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, 
+      #{type,jdbcType=CHAR}, #{detail,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.kuangren.po.works.Works" >
+    insert into works
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="environment != null" >
+        environment,
+      </if>
+      <if test="tool != null" >
+        tool,
+      </if>
+      <if test="timeCost != null" >
+        timeCost,
+      </if>
+      <if test="beginTime != null" >
+        beginTime,
+      </if>
+      <if test="numOfDeveloper != null" >
+        numOfDeveloper,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+      <if test="seeCount != null" >
+        seeCount,
+      </if>
+      <if test="replyCount != null" >
+        replyCount,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="detail != null" >
+        detail,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=CHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="environment != null" >
+        #{environment,jdbcType=VARCHAR},
+      </if>
+      <if test="tool != null" >
+        #{tool,jdbcType=VARCHAR},
+      </if>
+      <if test="timeCost != null" >
+        #{timeCost,jdbcType=CHAR},
+      </if>
+      <if test="beginTime != null" >
+        #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="numOfDeveloper != null" >
+        #{numOfDeveloper,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="seeCount != null" >
+        #{seeCount,jdbcType=INTEGER},
+      </if>
+      <if test="replyCount != null" >
+        #{replyCount,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=CHAR},
+      </if>
+      <if test="detail != null" >
+        #{detail,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.kuangren.po.works.WorksExample" resultType="java.lang.Integer" >
+    select count(*) from works
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update works
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.title != null" >
+        title = #{record.title,jdbcType=CHAR},
+      </if>
+      <if test="record.description != null" >
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.environment != null" >
+        environment = #{record.environment,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tool != null" >
+        tool = #{record.tool,jdbcType=VARCHAR},
+      </if>
+      <if test="record.timeCost != null" >
+        timeCost = #{record.timeCost,jdbcType=CHAR},
+      </if>
+      <if test="record.beginTime != null" >
+        beginTime = #{record.beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.numOfDeveloper != null" >
+        numOfDeveloper = #{record.numOfDeveloper,jdbcType=TINYINT},
+      </if>
+      <if test="record.createTime != null" >
+        createTime = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.seeCount != null" >
+        seeCount = #{record.seeCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.replyCount != null" >
+        replyCount = #{record.replyCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=CHAR},
+      </if>
+      <if test="record.detail != null" >
+        detail = #{record.detail,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update works
+    set id = #{record.id,jdbcType=INTEGER},
+      title = #{record.title,jdbcType=CHAR},
+      description = #{record.description,jdbcType=VARCHAR},
+      environment = #{record.environment,jdbcType=VARCHAR},
+      tool = #{record.tool,jdbcType=VARCHAR},
+      timeCost = #{record.timeCost,jdbcType=CHAR},
+      beginTime = #{record.beginTime,jdbcType=TIMESTAMP},
+      numOfDeveloper = #{record.numOfDeveloper,jdbcType=TINYINT},
+      createTime = #{record.createTime,jdbcType=TIMESTAMP},
+      seeCount = #{record.seeCount,jdbcType=INTEGER},
+      replyCount = #{record.replyCount,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=TINYINT},
+      type = #{record.type,jdbcType=CHAR},
+      detail = #{record.detail,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update works
+    set id = #{record.id,jdbcType=INTEGER},
+      title = #{record.title,jdbcType=CHAR},
+      description = #{record.description,jdbcType=VARCHAR},
+      environment = #{record.environment,jdbcType=VARCHAR},
+      tool = #{record.tool,jdbcType=VARCHAR},
+      timeCost = #{record.timeCost,jdbcType=CHAR},
+      beginTime = #{record.beginTime,jdbcType=TIMESTAMP},
+      numOfDeveloper = #{record.numOfDeveloper,jdbcType=TINYINT},
+      createTime = #{record.createTime,jdbcType=TIMESTAMP},
+      seeCount = #{record.seeCount,jdbcType=INTEGER},
+      replyCount = #{record.replyCount,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=TINYINT},
+      type = #{record.type,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kuangren.po.works.Works" >
+    update works
+    <set >
+      <if test="title != null" >
+        title = #{title,jdbcType=CHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="environment != null" >
+        environment = #{environment,jdbcType=VARCHAR},
+      </if>
+      <if test="tool != null" >
+        tool = #{tool,jdbcType=VARCHAR},
+      </if>
+      <if test="timeCost != null" >
+        timeCost = #{timeCost,jdbcType=CHAR},
+      </if>
+      <if test="beginTime != null" >
+        beginTime = #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="numOfDeveloper != null" >
+        numOfDeveloper = #{numOfDeveloper,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="seeCount != null" >
+        seeCount = #{seeCount,jdbcType=INTEGER},
+      </if>
+      <if test="replyCount != null" >
+        replyCount = #{replyCount,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=CHAR},
+      </if>
+      <if test="detail != null" >
+        detail = #{detail,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.kuangren.po.works.Works" >
+    update works
+    set title = #{title,jdbcType=CHAR},
+      description = #{description,jdbcType=VARCHAR},
+      environment = #{environment,jdbcType=VARCHAR},
+      tool = #{tool,jdbcType=VARCHAR},
+      timeCost = #{timeCost,jdbcType=CHAR},
+      beginTime = #{beginTime,jdbcType=TIMESTAMP},
+      numOfDeveloper = #{numOfDeveloper,jdbcType=TINYINT},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      seeCount = #{seeCount,jdbcType=INTEGER},
+      replyCount = #{replyCount,jdbcType=INTEGER},
+      status = #{status,jdbcType=TINYINT},
+      type = #{type,jdbcType=CHAR},
+      detail = #{detail,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kuangren.po.works.Works" >
+    update works
+    set title = #{title,jdbcType=CHAR},
+      description = #{description,jdbcType=VARCHAR},
+      environment = #{environment,jdbcType=VARCHAR},
+      tool = #{tool,jdbcType=VARCHAR},
+      timeCost = #{timeCost,jdbcType=CHAR},
+      beginTime = #{beginTime,jdbcType=TIMESTAMP},
+      numOfDeveloper = #{numOfDeveloper,jdbcType=TINYINT},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      seeCount = #{seeCount,jdbcType=INTEGER},
+      replyCount = #{replyCount,jdbcType=INTEGER},
+      status = #{status,jdbcType=TINYINT},
+      type = #{type,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

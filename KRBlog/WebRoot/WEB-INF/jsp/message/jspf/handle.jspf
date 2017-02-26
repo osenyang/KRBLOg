@@ -1,0 +1,19 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+
+<div class="btn-group btn-group-xs" role="group" aria-label="...">
+
+<a class="btn btn-default"
+	href="${pageContext.request.contextPath}/message/setSend.action?id=${message.id}&t=<%= new Date()%>">寄语
+</a>
+
+<a class="btn btn-default"
+	onclick="$.kr_confirm('${pageContext.request.contextPath}/message/delete.action?id=${message.id}', '确定删除此记录？注意：如果此记录有子回复，那么将会一并删除底下的所有子回复！');"
+	href="#"> <span class="glyphicon glyphicon-trash"
+	aria-hidden="true"></span> 删除
+</a>
+
+</div>
+
+
+

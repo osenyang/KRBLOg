@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kuangren.mapper.video.VideoMapper" >
+  <resultMap id="BaseResultMap" type="com.kuangren.po.video.Video" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="CHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="vedioPath" property="vedioPath" jdbcType="VARCHAR" />
+    <result column="size" property="size" jdbcType="INTEGER" />
+    <result column="timeSpan" property="timeSpan" jdbcType="CHAR" />
+    <result column="seeCount" property="seeCount" jdbcType="INTEGER" />
+    <result column="commentCount" property="commentCount" jdbcType="INTEGER" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="isSecret" property="isSecret" jdbcType="TINYINT" />
+    <result column="favor" property="favor" jdbcType="INTEGER" />
+    <result column="trample" property="trample" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, title, description, vedioPath, size, timeSpan, seeCount, commentCount, createTime, 
+    status, isSecret, favor, trample, type
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.kuangren.po.video.VideoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from video
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from video
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from video
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.kuangren.po.video.VideoExample" >
+    delete from video
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.kuangren.po.video.Video" >
+    insert into video (id, title, description, 
+      vedioPath, size, timeSpan, 
+      seeCount, commentCount, createTime, 
+      status, isSecret, favor, 
+      trample, type)
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=CHAR}, #{description,jdbcType=VARCHAR}, 
+      #{vedioPath,jdbcType=VARCHAR}, #{size,jdbcType=INTEGER}, #{timeSpan,jdbcType=CHAR}, 
+      #{seeCount,jdbcType=INTEGER}, #{commentCount,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=TINYINT}, #{isSecret,jdbcType=TINYINT}, #{favor,jdbcType=INTEGER}, 
+      #{trample,jdbcType=INTEGER}, #{type,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.kuangren.po.video.Video" >
+    insert into video
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="vedioPath != null" >
+        vedioPath,
+      </if>
+      <if test="size != null" >
+        size,
+      </if>
+      <if test="timeSpan != null" >
+        timeSpan,
+      </if>
+      <if test="seeCount != null" >
+        seeCount,
+      </if>
+      <if test="commentCount != null" >
+        commentCount,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isSecret != null" >
+        isSecret,
+      </if>
+      <if test="favor != null" >
+        favor,
+      </if>
+      <if test="trample != null" >
+        trample,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=CHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="vedioPath != null" >
+        #{vedioPath,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null" >
+        #{size,jdbcType=INTEGER},
+      </if>
+      <if test="timeSpan != null" >
+        #{timeSpan,jdbcType=CHAR},
+      </if>
+      <if test="seeCount != null" >
+        #{seeCount,jdbcType=INTEGER},
+      </if>
+      <if test="commentCount != null" >
+        #{commentCount,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isSecret != null" >
+        #{isSecret,jdbcType=TINYINT},
+      </if>
+      <if test="favor != null" >
+        #{favor,jdbcType=INTEGER},
+      </if>
+      <if test="trample != null" >
+        #{trample,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.kuangren.po.video.VideoExample" resultType="java.lang.Integer" >
+    select count(*) from video
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update video
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.title != null" >
+        title = #{record.title,jdbcType=CHAR},
+      </if>
+      <if test="record.description != null" >
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.vedioPath != null" >
+        vedioPath = #{record.vedioPath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.size != null" >
+        size = #{record.size,jdbcType=INTEGER},
+      </if>
+      <if test="record.timeSpan != null" >
+        timeSpan = #{record.timeSpan,jdbcType=CHAR},
+      </if>
+      <if test="record.seeCount != null" >
+        seeCount = #{record.seeCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.commentCount != null" >
+        commentCount = #{record.commentCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null" >
+        createTime = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.isSecret != null" >
+        isSecret = #{record.isSecret,jdbcType=TINYINT},
+      </if>
+      <if test="record.favor != null" >
+        favor = #{record.favor,jdbcType=INTEGER},
+      </if>
+      <if test="record.trample != null" >
+        trample = #{record.trample,jdbcType=INTEGER},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update video
+    set id = #{record.id,jdbcType=INTEGER},
+      title = #{record.title,jdbcType=CHAR},
+      description = #{record.description,jdbcType=VARCHAR},
+      vedioPath = #{record.vedioPath,jdbcType=VARCHAR},
+      size = #{record.size,jdbcType=INTEGER},
+      timeSpan = #{record.timeSpan,jdbcType=CHAR},
+      seeCount = #{record.seeCount,jdbcType=INTEGER},
+      commentCount = #{record.commentCount,jdbcType=INTEGER},
+      createTime = #{record.createTime,jdbcType=TIMESTAMP},
+      status = #{record.status,jdbcType=TINYINT},
+      isSecret = #{record.isSecret,jdbcType=TINYINT},
+      favor = #{record.favor,jdbcType=INTEGER},
+      trample = #{record.trample,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kuangren.po.video.Video" >
+    update video
+    <set >
+      <if test="title != null" >
+        title = #{title,jdbcType=CHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="vedioPath != null" >
+        vedioPath = #{vedioPath,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null" >
+        size = #{size,jdbcType=INTEGER},
+      </if>
+      <if test="timeSpan != null" >
+        timeSpan = #{timeSpan,jdbcType=CHAR},
+      </if>
+      <if test="seeCount != null" >
+        seeCount = #{seeCount,jdbcType=INTEGER},
+      </if>
+      <if test="commentCount != null" >
+        commentCount = #{commentCount,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isSecret != null" >
+        isSecret = #{isSecret,jdbcType=TINYINT},
+      </if>
+      <if test="favor != null" >
+        favor = #{favor,jdbcType=INTEGER},
+      </if>
+      <if test="trample != null" >
+        trample = #{trample,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kuangren.po.video.Video" >
+    update video
+    set title = #{title,jdbcType=CHAR},
+      description = #{description,jdbcType=VARCHAR},
+      vedioPath = #{vedioPath,jdbcType=VARCHAR},
+      size = #{size,jdbcType=INTEGER},
+      timeSpan = #{timeSpan,jdbcType=CHAR},
+      seeCount = #{seeCount,jdbcType=INTEGER},
+      commentCount = #{commentCount,jdbcType=INTEGER},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT},
+      isSecret = #{isSecret,jdbcType=TINYINT},
+      favor = #{favor,jdbcType=INTEGER},
+      trample = #{trample,jdbcType=INTEGER},
+      type = #{type,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

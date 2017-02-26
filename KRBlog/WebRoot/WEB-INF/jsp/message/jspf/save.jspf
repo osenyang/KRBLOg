@@ -1,0 +1,78 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+
+<script>
+$(function(){
+	/* $('.collapse').on('show.bs.collapse', function () {
+		//alert("test");
+	}) */
+	
+	/* $(".collapse_a").click(function(){
+		//alert("test");
+	}); */
+	
+	/* 验证 */
+	/* $('#message_form').bootstrapValidator({
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {//验证：规则
+        	content: {
+                validators: {
+                    notEmpty: {//非空验证：提示消息
+                        message: '请输入内容'
+                    },
+                    stringLength: {
+                        min: 1,
+                        max: 100,
+                        message: '最多输入100字符'
+                    }
+                }
+            }
+        }
+    }); */
+    
+    /* alert($("form.kr_validate").data("bv-feedbackicons-valid"));
+    console.log($("form.kr_validate").data("bv-feedbackicons-valid")); */
+});
+</script>
+
+
+<!-- 这个是留言板上面的留言部分 -->
+<form class="form-horizontal kr_validate" id="message_form"
+	action="${pageContext.request.contextPath }/message/save/free.action"
+	method="post" enctype="multipart/form-data">
+	<%-- data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+    data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+    data-bv-feedbackicons-validating="glyphicon glyphicon-refresh" 已经写在baseJs里面的，不用在这里另外写--%>
+
+	<div class="panel panel-danger">
+		<div class="panel-body">
+
+			<div class="form-group">
+				<label class="control-label sr-only" for="message">留言</label>
+				<div class="col-sm-12">
+					<textarea required
+						data-bv-notempty-message="大侠，随便说一句呗"
+						data-bv-stringlength="true" data-bv-stringlength-min="1" data-bv-stringlength-max="200"
+						class="form-control" id="content" rows="2" name="content"
+						placeholder="发表留言：还望大神不吝啬指教...">${message.content}</textarea>
+				</div>
+			</div>
+		</div><!-- /panel-body -->
+
+		<div class="panel-footer">
+			<input type="submit" class="btn btn-default" value="留言" 
+			data-toggle="tooltip" data-placement="top" title="开口就是一金石良言哈"/>
+			&nbsp;&nbsp;
+			<a   id="advanced_btn"
+				 class="btn btn-default" 
+			     onclick="$.kr_form('${pageContext.request.contextPath}/message/saveUI/free.action', 'message_form_modal', '发表留言', 'lg');"
+			     href="#" >高级</a>
+			     <!-- 上面那个提交的form的id（js方法的第二个参数）是另一个模态框里面的 -->
+		</div><!-- /panel-footer -->
+	</div><!-- /panel-default -->
+</form>
+

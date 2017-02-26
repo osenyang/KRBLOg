@@ -1,0 +1,38 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt"  prefix="fmt"%>
+
+<div class="panel panel-success">
+  <div class="panel-heading">
+    <h3 class="panel-title">我的心情
+    <a id="more_mood" href="${pageContext.request.contextPath}/mood/list.action" data-toggle="tooltip" data-placement="top" title="更多">
+    	<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+    </a>
+    </h3>
+  </div>
+  <div class="panel-body">
+    <table class="table table-striped">
+    	<thead>
+    		<tr>
+    			<th>内容</th>
+    			<th width="14%">发表时间</th>
+    		</tr>
+    	</thead>
+    	
+    	<tbody>
+    		<c:forEach items="${moods}" var="mood">
+    		<tr>
+    			<td>
+    				<font class="elite"><c:if test="${mood.status == 6}">[精华]</c:if></font>
+    				${mood.content}
+    			</td>
+    			<td><fmt:formatDate value="${mood.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+    		</tr>
+    		</c:forEach>
+    	</tbody>
+    	
+    	<tfoot></tfoot>
+    </table>
+  </div>
+</div>
